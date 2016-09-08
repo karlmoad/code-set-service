@@ -1,0 +1,168 @@
+swagger: '2.0'
+info:
+  description: |
+    This service manages the code sets used in ESB managed processes
+  version: 1.0.0
+  title: 'Enterprise Service Bus, mapping code-set management service'
+basePath: /api
+schemes:
+  - http
+securityDefinitions:
+  token:
+    type: apiKey
+    name: auth
+    in: header
+paths:
+  '/codes':
+    get:
+      tags:
+        - codes
+      summary: retrieve all codes
+      operationId: getCodes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful
+          schema:
+            $ref: '#/definitions/Codes'
+        '400':
+          description: failure
+
+    delete:
+      tags:
+        - code
+      summary: Remove existing code(s)
+      description: ''
+      operationId: remCode
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: code value(s) to be removed include set and code id
+          required: true
+          schema:
+            $ref: '#/definitions/Codes'
+      responses:
+        '200':
+          description: successful
+        '400':
+          description: failure
+
+    put:
+      tags:
+        - code
+      summary: Add/Update existing code(s)
+      description: ''
+      operationId: setCode
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: code value(s) to be updated
+          required: false
+          schema:
+            $ref: '#/definitions/Codes'
+      responses:
+        '200':
+          description: successful
+        '400':
+          description: failure
+
+
+  '/code/{setId}/{codeId}':
+    get:
+      tags:
+        - code
+      summary: Get a code value
+      operationId: getCode
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: setId
+          description: code set id to which the will code belong
+          required: true
+          type: string
+        - in: path
+          name: codeId
+          description: code primary identifier
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful
+          schema:
+            $ref: '#/definitions/Code'
+        '400':
+          description: failure
+
+  '/codes/{setId}':
+    get:
+      tags:
+        - codes
+      summary: retrieve an entire code set
+      operationId: getCodeSet
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: setId
+          description: code set id to retrieve
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful
+          schema:
+            $ref: '#/definitions/Codes'
+        '400':
+          description: failure
+definitions:
+  Codes:
+    type: object
+    properties:
+      sets:
+        type: array
+        items:
+          $ref: '#/definitions/Set'
+  Set:
+    type: object
+    properties:
+      id: 
+        type: string
+      codes:
+        type: array
+        items:
+          $ref: '#/definitions/Code'
+
+  Code:
+    type: object
+    properties:
+      id:
+        type: string
+      values:
+        type: array
+        items:
+          $ref: '#/definitions/Value'
+  Value:
+    type: object
+    properties:
+      id:
+        type: string
+      value:
+        type: string
+      timestamp:
+        type: string
