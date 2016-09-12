@@ -12,6 +12,7 @@ securityDefinitions:
     type: apiKey
     name: auth
     in: header
+    x-authorize: security/token.js
 paths:
   '/codes':
     get:
@@ -30,6 +31,8 @@ paths:
             $ref: '#/definitions/Codes'
         '400':
           description: failure
+      security:
+        - token: []
 
     delete:
       tags:
@@ -53,6 +56,8 @@ paths:
           description: successful
         '400':
           description: failure
+      security:
+        - token: []
 
     put:
       tags:
@@ -76,7 +81,8 @@ paths:
           description: successful
         '400':
           description: failure
-
+      security:
+        - token: []
 
   '/code/{setId}/{codeId}':
     get:
@@ -106,6 +112,8 @@ paths:
             $ref: '#/definitions/Code'
         '400':
           description: failure
+      security:
+        - token: []
 
   '/codes/{setId}':
     get:
@@ -130,6 +138,11 @@ paths:
             $ref: '#/definitions/Codes'
         '400':
           description: failure
+      security:
+        - token: []
+
+
+
 definitions:
   Codes:
     type: object
@@ -156,13 +169,6 @@ definitions:
       values:
         type: array
         items:
-          $ref: '#/definitions/Value'
-  Value:
-    type: object
-    properties:
-      id:
-        type: string
-      value:
-        type: string
+          type: object
       timestamp:
         type: string
