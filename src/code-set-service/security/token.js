@@ -6,9 +6,10 @@ const jwt = require('jsonwebtoken');
  * description: 
  */
 module.exports = function authorize(req, res, next) {
-    //The context('this') for authorize will be bound to the 'securityDefinition'
-    //this.name - The name of the header or query parameter to be used for securityDefinitions:token apiKey security scheme.
-    //this.in - The location of the API key ("query" or "header") for securityDefinitions:token apiKey security scheme.
+
+    // The context('this') for authorize will be bound to the 'securityDefinition'
+    // this.name - The name of the header or query parameter to be used for securityDefinitions:token apiKey security scheme.
+    // this.in - The location of the API key ("query" or "header") for securityDefinitions:token apiKey security scheme.
     var auth = req.header(this.name);
     var key = process.env.JWT_KEY;
 
@@ -18,7 +19,7 @@ module.exports = function authorize(req, res, next) {
                 res.status(400).send(err);
             }
             else {
-                req.authenticated = decoded;
+                req.auth = decoded;
                 next();
             }
         });
