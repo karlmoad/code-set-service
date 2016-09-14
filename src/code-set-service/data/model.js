@@ -1,5 +1,6 @@
 'use strict'
 const azure = require('azure-storage');
+const ignore = ['partitionkey', 'rowkey', 'timestamp', '.metadata'];
 module.exports = {
     fromAzureResults: function(results, callback){
         var sets = {};
@@ -12,16 +13,19 @@ module.exports = {
             }
 
             var ts = record.Timestamp._;
-            var vals = null;
+            var vals = [];
 
-            if(record.value._){
-                try{
-                    vals = JSON.parse(record.value._)
-                }catch(e){
-                    vals = record.value._;
+
+            for(var val in record){
+                if(record.hasOwnProperty(val)){
+                    if(ignore.indexOf(val.toLowerCase()) < 0){
+                        var tmp = { id: val, value: record[val]._, timestamp: ts};
+                        vals.push(tmp);
+                    }
                 }
             }
-            var code = {id: record.RowKey._, values: vals, timestamp: ts};
+
+            var code = {id: record.RowKey._, values: vals};
 
             sets[record.PartitionKey._].push(code);
         });
@@ -50,19 +54,17 @@ module.exports = {
                             if(data.sets[set].codes.hasOwnProperty(code)){
 
                                 var CODE = data.sets[set].codes[code];
-
-                                var VAL = null;
-                                try{
-                                    VAL = JSON.stringify(CODE.values);
-                                }catch(e){
-                                    VAL = CODE.values;
-                                }
+                                var VALS = [];
 
                                 var task = {
-                                    PartitionKey:{"_": SET.id},
-                                    RowKey:{"_":CODE.id},
-                                    value:{"_": VAL}
-                                };                     
+                                    PartitionKey: {"_": SET.id},
+                                    RowKey: {"_": CODE.id}
+                                };
+
+                                CODE.values.forEach(function(value){
+                                    task[value.id] = value.value;
+                                });
+
                                 batch.insertOrReplaceEntity(task);
                             }
                         }

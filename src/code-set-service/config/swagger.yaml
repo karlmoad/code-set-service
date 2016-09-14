@@ -54,6 +54,7 @@ paths:
         '400':
           description: failure
 
+
     put:
       tags:
         - code
@@ -107,6 +108,7 @@ paths:
         '400':
           description: failure
 
+
   '/codes/{setId}':
     get:
       tags:
@@ -130,6 +132,8 @@ paths:
             $ref: '#/definitions/Codes'
         '400':
           description: failure
+
+
 definitions:
   Codes:
     type: object
@@ -138,6 +142,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Set'
+
   Set:
     type: object
     properties:
@@ -157,6 +162,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Value'
+
   Value:
     type: object
     properties:
