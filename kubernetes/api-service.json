@@ -1,0 +1,22 @@
+{
+  "kind":"Service",
+  "apiVersion": "v1",
+  "metadata" : {
+    "name":"code-set-api-service",
+    "labels":{"name":"code-set-api"}
+  },
+  "spec":{
+      "type":"LoadBalancer",
+      "selector":{
+        "name":"code-set-api-balancer"
+      },
+      "ports":[
+          {
+            "name":"api-rest",
+            "protocol":"TCP",
+            "port":8000,
+            "targetPort":8080
+          }
+      ]
+  }
+}

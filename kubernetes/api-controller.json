@@ -1,0 +1,32 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata" : {
+    "name":"code-set-api-controller",
+    "labels":{
+        "name":"code-set-api"
+    }
+  },
+  "spec":{
+    "replicas":3,
+    "selector":{"name":"code-set-api"},
+    "template":{
+        "metadata":{"labels":{"name":"code-set-api"}},
+        "spec":{
+          "containers":[
+            {
+                "name":"code-set-api-container",
+                "image":"??????????????????",
+                "ports":[
+                  {
+                      "name":"api-rest",
+                      "containerPort":8000,
+                      "hostPort":8080
+                  }
+                ]
+            }
+          ]
+        }
+    }
+  }
+}
