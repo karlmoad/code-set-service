@@ -37,7 +37,7 @@ module.exports = {
         }
 
         function executeQuery(query,token,data, callback){
-            tableSvc.queryEntities("devcodeset", query, token, function(error, results){
+            tableSvc.queryEntities(table, query, token, function(error, results){
                 if (!error) {
                     data.push.apply(data, results.entries);
                     if(results.continuationToken){
