@@ -33,7 +33,8 @@
     "test": "tape 'tests/**/*.js'",
     "cover": "istanbul cover tape -- 'tests/**/*.js'",
     "lint": "eslint .",
-    "regenerate": "yo swaggerize:test --framework express --apiPath './config/swagger.yaml'"
+    "regenerate": "yo swaggerize:test --framework express --apiPath './config/swagger.yaml'",
+    "debug": "node --debug server.js"
   },
   "main": "./server"
 }

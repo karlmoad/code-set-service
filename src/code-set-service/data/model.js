@@ -42,68 +42,82 @@ module.exports = {
     },
 
     toAzureUpdateBatch: function(data, callback){
-        var batch = new azure.TableBatch();
-        if(data.sets){
-            for(var set in data.sets){
-                if(data.sets[set].codes){
-                    if(data.sets.hasOwnProperty(set)){
 
-                        var SET = data.sets[set];
+        var batches = [];
 
-                        for(var code in data.sets[set].codes){
-                            if(data.sets[set].codes.hasOwnProperty(code)){
+        function iterateSet(set){
+            if (set.codes) {
+                var batch = new azure.TableBatch();
+                set.codes.forEach(function (code) {
 
-                                var CODE = data.sets[set].codes[code];
-                                var VALS = [];
+                    var task = {
+                        PartitionKey: {"_": set.id},
+                        RowKey: {"_": code.id}
+                    };
 
-                                var task = {
-                                    PartitionKey: {"_": SET.id},
-                                    RowKey: {"_": CODE.id}
-                                };
+                    code.values.forEach(function(value){
+                        task[value.id] = {'_' : value.value};
+                    });
 
-                                CODE.values.forEach(function(value){
-                                    task[value.id] = value.value;
-                                });
-
-                                batch.insertOrReplaceEntity(task);
-                            }
-                        }
-                    }
-                }
-                else{
-                    callback("Malformed object");
-                }
+                    batch.insertOrReplaceEntity(task);
+                });
+                batches.push(batch);
+                return true;
             }
+            else {
+                return false;
+            }
+        }
 
-            callback(null, batch);
+        if(data.sets){
 
-        }else{
-            callback("Malformed object");
+            var success = data.sets.every(iterateSet);
+            if(success){
+                callback(null, batches);
+            }
+            else{
+                callback("Failure", null);
+            }
+        }
+        else{
+            callback("Malformed Object");
         }
     },
 
     toAzureRemovalBatch: function(data, callback){
-        var batch = new azure.TableBatch();
+        var batches = [];
+
+        function iterateSet(set){
+            if (set.codes) {
+                var batch = new azure.TableBatch();
+                set.codes.forEach(function (code) {
+
+                    var task = {
+                        PartitionKey: {"_": set.id},
+                        RowKey: {"_": code.id},
+                    };
+                    batch.deleteEntity(task);
+                });
+                batches.push(batch);
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
         if(data.sets){
-            data.sets.forEach(function(set){
-                if(set.codes){
-                    set.codes.forEach(function(code){
 
-                        var task = {
-                            PartitionKey:{"_": set.id},
-                            RowKey:{"_":code.id},
-                        };
-                        batch.deleteEntity(task);
-                    });
-
-                    callback(null, batch);
-                }
-                else{
-                    callback("Malformed object");
-                }
-            });
-        }else{
-            callback("Malformed object");
+            var success = data.sets.every(iterateSet);
+            if(success){
+                callback(null, batches);
+            }
+            else{
+                callback("Failure", null);
+            }
+        }
+        else{
+            callback("Malformed Object");
         }
     }
 };

@@ -10,15 +10,32 @@ var tableSvc = azure.createTableServiceWithSas(host,sas);
 // Begin module exported code 
 module.exports = {
 
-    executeBatchRequest: function(batch, callback){
-        tableSvc.executeBatch(table, batch, function(err, result, response){
-            if(!err){
-                callback(null, result);
+    executeBatchRequest: function(batches, callback){
+        function executeBatch(batch){
+            try {
+                tableSvc.executeBatch(table, batch, function (err, result, response) {
+                    if (!err) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                });
             }
-            else{
-                callback(err, null);
+            catch(error){
+                console.log(error);
+                return false;
             }
-        });
+        }
+
+        var complete = batches.every(executeBatch);
+
+        if(complete){
+            callback(null, "Success");
+        }
+        else{
+            callback("Failure", null);
+        }
     },
 
     getCodes: function(setid, codeid, callback){
@@ -37,19 +54,25 @@ module.exports = {
         }
 
         function executeQuery(query,token,data, callback){
-            tableSvc.queryEntities(table, query, token, function(error, results){
-                if (!error) {
-                    data.push.apply(data, results.entries);
-                    if(results.continuationToken){
-                        executeQuery(query,results.continuationToken, data, callback);
+            try {
+                tableSvc.queryEntities(table, query, token, function (error, results) {
+                    if (!error) {
+                        data.push.apply(data, results.entries);
+                        if (results.continuationToken) {
+                            executeQuery(query, results.continuationToken, data, callback);
+                        }
+                        else {
+                            formatter.fromAzureResults(data, callback);
+                        }
+                    } else {
+                        callback("ERROR executing request query");
                     }
-                    else{
-                        formatter.fromAzureResults(data, callback);
-                    }
-                }else {
-                    callback("ERROR executing request query");
-                }
-            });
+                });
+            }
+            catch(error){
+                console.log(error);
+                callback("Internal Service Error", null);
+            }
         }
         executeQuery(query, null, data, callback);
     }

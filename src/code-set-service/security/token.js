@@ -16,7 +16,7 @@ module.exports = function authorize(req, res, next) {
     if(auth) {
         jwt.verify(auth, key, {algorithm: 'HS512'}, function (err, decoded) {
             if (err) {
-                res.status(400).send(err);
+                res.status(400).send('Unauthorized');
             }
             else {
                 req.auth = decoded;

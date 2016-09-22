@@ -30,6 +30,8 @@ paths:
             $ref: '#/definitions/Codes'
         '400':
           description: failure
+      security:
+        - token: []
 
     delete:
       tags:
@@ -53,6 +55,8 @@ paths:
           description: successful
         '400':
           description: failure
+      security:
+        - token: []
 
 
     put:
@@ -77,6 +81,8 @@ paths:
           description: successful
         '400':
           description: failure
+      security:
+        - token: []
 
 
   '/code/{setId}/{codeId}':
@@ -107,6 +113,8 @@ paths:
             $ref: '#/definitions/Code'
         '400':
           description: failure
+      security:
+        - token: []
 
 
   '/codes/{setId}':
@@ -132,6 +140,8 @@ paths:
             $ref: '#/definitions/Codes'
         '400':
           description: failure
+      security:
+        - token: []
 
 
 definitions:
