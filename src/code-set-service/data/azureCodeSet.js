@@ -38,6 +38,49 @@ module.exports = {
         }
     },
 
+    executeSetDelete: function(setid, callback){
+
+        var batches = null;
+        this.getCodes(setid, null, function (err, data) {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    formatter.toAzureRemovalBatch(data, function (error, formatted) {
+                        if (error) {
+                            callback(error);
+                        }
+                        else {
+                            batches = formatted;
+                        }
+                    });
+                }
+        });
+
+        if(batches){
+            this.executeBatchRequest(batches, callback);
+        }
+        else{
+            callback("Failure");
+        }
+    },
+
+    executeCodeDelete: function(setid, codeid, callback){
+
+        var task = {
+            PartitionKey: {'_':setid},
+            RowKey: {'_':codeid}
+        };
+
+        tableSvc.deleteEntity(table, task, function(error, response){
+            if(!error) {
+                callback(null,"success");
+            }else{
+                callback(error);
+            }
+        });
+    },
+
     getCodes: function(setid, codeid, callback){
 
         var data = [];    

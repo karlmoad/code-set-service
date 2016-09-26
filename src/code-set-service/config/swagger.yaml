@@ -33,32 +33,6 @@ paths:
       security:
         - token: []
 
-    delete:
-      tags:
-        - code
-      summary: Remove existing code(s)
-      description: ''
-      operationId: remCode
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: code value(s) to be removed include set and code id
-          required: true
-          schema:
-            $ref: '#/definitions/Codes'
-      responses:
-        '200':
-          description: successful
-        '400':
-          description: failure
-      security:
-        - token: []
-
-
     put:
       tags:
         - code
@@ -85,7 +59,7 @@ paths:
         - token: []
 
 
-  '/code/{setId}/{codeId}':
+  '/codes/{setId}/{codeId}':
     get:
       tags:
         - code
@@ -111,6 +85,34 @@ paths:
           description: successful
           schema:
             $ref: '#/definitions/Code'
+        '400':
+          description: failure
+      security:
+        - token: []
+
+    delete:
+      tags:
+        - code
+      summary: delete a code
+      operationId: deleteCode
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: setId
+          description: code set id to which the will code belong
+          required: true
+          type: string
+        - in: path
+          name: codeId
+          description: code primary identifier
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful
         '400':
           description: failure
       security:
@@ -142,6 +144,32 @@ paths:
           description: failure
       security:
         - token: []
+
+
+    delete:
+      tags:
+        - codes
+      summary: delete a code set
+      operationId: deleteCodeSet
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: setId
+          description: code set id to delete
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful
+          schema:
+        '400':
+          description: failure
+      security:
+        - token: []
+
 
 
 definitions:

@@ -25,31 +25,6 @@ module.exports = {
     },
 
     /**
-     * summary: Remove and existing code(s)
-     * description:
-     * parameters: body
-     * produces: application/json
-     * responses: 200, 400
-     */
-    delete: function remCode(req, res, next) {
-
-        model.toAzureRemovalBatch(req.body, function (err, batches) {
-            if (err) {
-                res.status(400).send("failure");
-            }
-            else {
-                dataProvider.executeBatchRequest(batches, function (err, result) {
-                    if (err) {
-                        res.status(400).send("failure");
-                    }
-                    else {
-                        res.status(200).send("success");
-                    }
-                });
-            }
-        });
-    },
-    /**
      * summary: Add/Update an existing code(s)
      * description:
      * parameters: body
