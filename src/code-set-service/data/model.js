@@ -55,9 +55,13 @@ module.exports = {
                         RowKey: {"_": code.id}
                     };
 
-                    code.values.forEach(function(value){
-                        task[value.id] = {'_' : value.value};
-                    });
+                    /* fix handle if values is empty array or null altogether */
+
+                    if(code.values) {
+                        code.values.forEach(function (value) {
+                            task[value.id] = {'_': value.value};
+                        });
+                    }
 
                     batch.insertOrReplaceEntity(task);
                 });

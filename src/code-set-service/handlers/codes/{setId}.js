@@ -23,7 +23,7 @@ module.exports = {
     },
 
     delete: function deleteCodeSet(req, res, next) {
-        dataProvider.executeSetDelete(req.params.setId, null, function(err, data){
+        dataProvider.executeSetDelete(req.params.setId, function(err, data){
             if(err){
                 console.log(err);
                 res.status(400).send("Failure");

@@ -12,57 +12,58 @@ module.exports = {
 
     executeBatchRequest: function(batches, callback){
         function executeBatch(batch){
+            var out = true;
+            /**
+             * Fall through logic array.every wil halt if callback function returns false
+             * setting the output of the every call to false otherwise true see MDN Array.every() for more details
+             */
+
             try {
                 tableSvc.executeBatch(table, batch, function (err, result, response) {
-                    if (!err) {
-                        return true;
-                    }
-                    else {
-                        return false;
+                    if (err){
+                        console.log(err);
+                        out = false;
                     }
                 });
             }
             catch(error){
                 console.log(error);
-                return false;
+                out = false;
             }
+            finally {
+                return out;
+            }
+
         }
 
-        var complete = batches.every(executeBatch);
+        var clear = batches.every(executeBatch);
 
-        if(complete){
+
+
+        if(clear){
             callback(null, "Success");
-        }
-        else{
+        }else{
             callback("Failure", null);
         }
     },
 
     executeSetDelete: function(setid, callback){
-
-        var batches = null;
-        this.getCodes(setid, null, function (err, data) {
-                if (err) {
-                    callback(err);
-                }
-                else {
-                    formatter.toAzureRemovalBatch(data, function (error, formatted) {
-                        if (error) {
-                            callback(error);
-                        }
-                        else {
-                            batches = formatted;
-                        }
-                    });
-                }
+        var self = this;
+        self.getCodes(setid, null, function (err, data) {
+            if (err) {
+                callback(err);
+            }
+            else {
+                formatter.toAzureRemovalBatch(data, function (error, batches) {
+                    if (error) {
+                        callback(error);
+                    }
+                    else {
+                        self.executeBatchRequest(batches, callback);
+                    }
+                });
+            }
         });
-
-        if(batches){
-            this.executeBatchRequest(batches, callback);
-        }
-        else{
-            callback("Failure");
-        }
     },
 
     executeCodeDelete: function(setid, codeid, callback){
