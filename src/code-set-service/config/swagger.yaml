@@ -164,7 +164,6 @@ paths:
       responses:
         '200':
           description: successful
-          schema:
         '400':
           description: failure
       security:
@@ -184,7 +183,7 @@ definitions:
   Set:
     type: object
     properties:
-      id: 
+      id:
         type: string
       codes:
         type: array
