@@ -1,0 +1,4 @@
+app
+run.env
+node_modules
+**/app
