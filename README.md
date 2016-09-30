@@ -50,7 +50,7 @@ export JWT_KEY={JWT KEY}
 
 ### Building and running docker image ###
 
-To build the docker image and install it to the local docker repo, form the root directory naviagte to the docker directory and execute gulp default task.
+To build the docker image and install it to the local docker repo, from the root directory navigate to the docker directory and execute gulp default task.
 
 ```
 
