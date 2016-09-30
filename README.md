@@ -56,6 +56,8 @@ To build the docker image and install it to the local docker repo, from the root
 
 :> cd docker
 
+:> npm install
+
 :> gulp
 
 . . .
