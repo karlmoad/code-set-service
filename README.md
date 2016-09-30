@@ -35,7 +35,7 @@ after cloning the repository within the src/code-set-service directory
 
 ```
 
-**Note:** To run the service you need to establish a series of environmental variables to which the service depends, prior to running the **npm start** command.
+**Note:** To run the service you need to establish a series of environment variables to which the service depends, prior to running the **npm start** command.
 
 **Linux/Mac OSX**
 
@@ -64,4 +64,6 @@ To build the docker image and install it to the local docker repo, form the root
 
 Follow the prompts. The gulp process can generate either a standard and debug variation of the project.  The only difference being that the debug variation runs the node.js application with he debug setting to allow remote debugging of the service.
 
-**Debug Port: 6000**   
+**Debug Port: 6000**  
+
+**Note:** the above stated environment variables must be passed onto the docker container via the **docker run** command
