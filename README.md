@@ -67,3 +67,9 @@ Follow the prompts. The gulp process can generate either a standard and debug va
 **Debug Port: 6000**  
 
 **Note:** the above stated environment variables must be passed onto the docker container via the **docker run** command
+
+```
+
+:> docker run -p 8000:8000 -d -e AZURE_STORAGE_HOST -e AZURE_STORAGE_SAS -e AZURE_STORAGE_TABLE -e JWT_KEY upmc-isd-eti/esb-code-set-api
+
+```
