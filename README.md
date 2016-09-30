@@ -78,7 +78,7 @@ standard
 
 debug
 
-docker run -p 8000:8000 -p 6000:6000 -d -e AZURE_STORAGE_HOST -e AZURE_STORAGE_SAS -e AZURE_STORAGE_TABLE -e JWT_KEY upmc-isd-eti/esb-code-set-api-debug
+:> docker run -p 8000:8000 -p 6000:6000 -d -e AZURE_STORAGE_HOST -e AZURE_STORAGE_SAS -e AZURE_STORAGE_TABLE -e JWT_KEY upmc-isd-eti/esb-code-set-api-debug
 
 
 ```
