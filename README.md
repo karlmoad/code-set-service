@@ -62,7 +62,7 @@ To build the docker image and install it to the local docker repo, from the root
 
 ```
 
-Follow the prompts. The gulp process can generate either a standard and debug variation of the project.  The only difference being that the debug variation runs the node.js application with he debug setting to allow remote debugging of the service.
+Follow the prompts. The gulp process can generate either a standard and debug variation of the project.  The only difference being that the debug variation runs the node.js application with the debug setting to allow remote debugging of the service.
 
 **Debug Port: 6000**  
 
