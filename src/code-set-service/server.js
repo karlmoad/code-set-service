@@ -17,6 +17,7 @@ App.use(BodyParser.urlencoded({
 
 App.use(Swaggerize({
     api: Path.resolve('./config/swagger.yaml'),
+    docspath: '/doc',
     handlers: Path.resolve('./handlers'),
     security: Path.resolve('./security')
 }));
