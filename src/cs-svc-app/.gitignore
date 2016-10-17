@@ -1,0 +1,12 @@
+# node.js 
+
+node_modules
+**/node_modules
+
+# bower
+
+bower_components
+**/bower_components
+
+
+ 
