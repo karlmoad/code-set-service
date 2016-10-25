@@ -1,8 +1,23 @@
 # eliminate node_modules folder in tree
 **/node_modules
+node_modules
+
+# bower
+**/bower_components
+bower_components
+
+
+
 
 # eliminate DS_Store files
 **/.DS_Store
+.DS_Store
+
 
 # eliminate IntelliJ project file/folder
 **/.idea
+.idea
+
+*.iml
+**/*.iml
+
